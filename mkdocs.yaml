@@ -1,0 +1,22 @@
+site_name: Computational Tutorials
+site_description: Practical guides for HPC users and operators
+repo_url: https://github.com/wintermutant/computational-tutorials
+repo_name: computational-tutorials
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.highlight
+
+nav:
+  - Home: index.md
+  - VSCode: vscode.md
