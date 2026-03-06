@@ -1,0 +1,2306 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Practical guides for HPC users and operators">
+      
+      
+      
+      
+        <link rel="prev" href="../vscode/">
+      
+      
+        <link rel="next" href="../jupyter-kernel-anvil-notebook/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>Anvil Composable (CLI) - Computational Tutorials</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deploying-a-full-stack-application-on-anvil-composable-with-kubernetes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Computational Tutorials" class="md-header__button md-logo" aria-label="Computational Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Computational Tutorials
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Anvil Composable (CLI)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/wintermutant/computational-tutorials" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    computational-tutorials
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Computational Tutorials" class="md-nav__button md-logo" aria-label="Computational Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Computational Tutorials
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/wintermutant/computational-tutorials" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    computational-tutorials
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VSCode
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anvil Composable (CLI)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anvil Composable (CLI)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal-of-this-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goal of this tutorial
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intuition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intuition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-our-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing our app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-of-an-example-app-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture of an example app (Services)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-to-host-our-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes to Host our Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes to Host our Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-pods-communicate-kubernetes-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Pods Communicate: Kubernetes Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exposing-the-application-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exposing the Application: Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-kubernetes-development-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Kubernetes Development &amp; Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Kubernetes Development &amp; Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-development-with-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Development with Docker Compose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Development with Docker Compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#review-the-docker-compose-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review the Docker Compose Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-and-pushing-docker-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building and Pushing Docker Images
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building and Pushing Docker Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-kubernetes-manifests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the Kubernetes Manifests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the Kubernetes Manifests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-to-anvil-composable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploying to Anvil Composable
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying to Anvil Composable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Configure kubectl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Create Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-deploy-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Deploy the Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-deploy-the-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Deploy the Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-deploy-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy the Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-deploy-the-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Deploy the Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-verify-all-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Verify All Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification-and-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification and Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verification and Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-pod-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check Pod Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-the-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test the Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test the Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-via-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test via Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pods-not-starting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pods Not Starting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Connection Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingress Not Working
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        View Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-debug-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful Debug Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleanup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jupyter-kernel-anvil-notebook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Anvil Notebook Kernel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#goal-of-this-tutorial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goal of this tutorial
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intuition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intuition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intuition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-our-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing our app
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-of-an-example-app-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture of an example app (Services)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-to-host-our-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes to Host our Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes to Host our Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-pods-communicate-kubernetes-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Pods Communicate: Kubernetes Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exposing-the-application-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exposing the Application: Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-kubernetes-development-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Kubernetes Development &amp; Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Kubernetes Development &amp; Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-development-with-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Development with Docker Compose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Development with Docker Compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#review-the-docker-compose-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review the Docker Compose Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-and-pushing-docker-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building and Pushing Docker Images
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building and Pushing Docker Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backend-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-kubernetes-manifests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding the Kubernetes Manifests
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the Kubernetes Manifests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frontend-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend Layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-to-anvil-composable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploying to Anvil Composable
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying to Anvil Composable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Configure kubectl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-create-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Create Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-deploy-the-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Deploy the Database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-deploy-the-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Deploy the Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-deploy-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy the Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-deploy-the-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Deploy the Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-verify-all-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Verify All Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification-and-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification and Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verification and Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-pod-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check Pod Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-the-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test the Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-the-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test the Frontend
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-via-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test via Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pods-not-starting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pods Not Starting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-connection-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Connection Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-not-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingress Not Working
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        View Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-debug-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Useful Debug Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cleanup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Improvements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Resources
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="deploying-a-full-stack-application-on-anvil-composable-with-kubernetes">Deploying a Full-Stack Application on Anvil Composable with Kubernetes</h1>
+<p>A complete, user-friendly guide to making your application live and accessible to anyone with internet access. We will
+walk through an example application with 3 separate components (Svelte frontend, FastAPI backend, and MongoDB database)
+on Anvil Composable using Kubernetes.</p>
+<p>Please see <a href="https://github.com/wintermutant/anvil-composable-tutorial">the associated repo</a> to follow along!</p>
+<ul>
+<li><a href="#deploying-a-full-stack-application-on-anvil-composable-with-kubernetes">Deploying a Full-Stack Application on Anvil Composable with Kubernetes</a></li>
+<li><a href="#goal-of-this-tutorial">Goal of this tutorial</a></li>
+<li><a href="#intuition">Intuition</a><ul>
+<li><a href="#accessing-our-app">Accessing our app</a></li>
+<li><a href="#architecture-of-an-example-app-services">Architecture of an example app (Services)</a></li>
+</ul>
+</li>
+<li><a href="#kubernetes-to-host-our-services">Kubernetes to Host our Services</a><ul>
+<li><a href="#how-pods-communicate-kubernetes-services">How Pods Communicate: Kubernetes Services</a></li>
+<li><a href="#exposing-the-application-ingress">Exposing the Application: Ingress</a></li>
+</ul>
+</li>
+<li><a href="#local-kubernetes-development--deployment">Local Kubernetes Development \&amp; Deployment</a><ul>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#architecture-overview">Architecture Overview</a></li>
+<li><a href="#project-structure">Project Structure</a></li>
+<li><a href="#local-development-with-docker-compose">Local Development with Docker Compose</a></li>
+<li><a href="#review-the-docker-compose-configuration">Review the Docker Compose Configuration</a></li>
+<li><a href="#running-locally">Running Locally</a></li>
+<li><a href="#building-and-pushing-docker-images">Building and Pushing Docker Images</a></li>
+<li><a href="#backend-image">Backend Image</a></li>
+<li><a href="#frontend-image">Frontend Image</a></li>
+<li><a href="#database-image">Database Image</a></li>
+<li><a href="#understanding-the-kubernetes-manifests">Understanding the Kubernetes Manifests</a></li>
+<li><a href="#namespace">Namespace</a></li>
+<li><a href="#database-layer">Database Layer</a></li>
+<li><a href="#backend-layer">Backend Layer</a></li>
+<li><a href="#frontend-layer">Frontend Layer</a></li>
+<li><a href="#ingress">Ingress</a></li>
+</ul>
+</li>
+<li><a href="#deploying-to-anvil-composable">Deploying to Anvil Composable</a><ul>
+<li><a href="#step-1-configure-kubectl">Step 1: Configure kubectl</a></li>
+<li><a href="#step-2-create-namespace">Step 2: Create Namespace</a></li>
+<li><a href="#step-3-deploy-the-database">Step 3: Deploy the Database</a></li>
+<li><a href="#step-4-deploy-the-backend">Step 4: Deploy the Backend</a></li>
+<li><a href="#step-5-deploy-the-frontend">Step 5: Deploy the Frontend</a></li>
+<li><a href="#step-6-deploy-the-ingress">Step 6: Deploy the Ingress</a></li>
+<li><a href="#step-7-verify-all-resources">Step 7: Verify All Resources</a></li>
+<li><a href="#verification-and-testing">Verification and Testing</a></li>
+<li><a href="#check-pod-status">Check Pod Status</a></li>
+<li><a href="#test-the-backend">Test the Backend</a></li>
+<li><a href="#test-the-frontend">Test the Frontend</a></li>
+<li><a href="#test-via-ingress">Test via Ingress</a></li>
+</ul>
+</li>
+<li><a href="#troubleshooting">Troubleshooting</a><ul>
+<li><a href="#pods-not-starting">Pods Not Starting</a></li>
+<li><a href="#database-connection-errors">Database Connection Errors</a></li>
+<li><a href="#ingress-not-working">Ingress Not Working</a></li>
+<li><a href="#view-events">View Events</a></li>
+<li><a href="#useful-debug-commands">Useful Debug Commands</a></li>
+</ul>
+</li>
+<li><a href="#cleanup">Cleanup</a></li>
+<li><a href="#next-steps">Next Steps</a><ul>
+<li><a href="#production-improvements">Production Improvements</a></li>
+<li><a href="#scaling">Scaling</a></li>
+<li><a href="#updates">Updates</a></li>
+</ul>
+</li>
+<li><a href="#additional-resources">Additional Resources</a></li>
+</ul>
+<hr />
+<h2 id="goal-of-this-tutorial">Goal of this tutorial</h2>
+<p>The goal is to showcase how to take a web-app you made on your computer and make it live and accessible to anyone in the
+world with internet. We call this process 'deployment', as we want to <em>deploy</em> our app onto Anvil Composable.</p>
+<h2 id="intuition">Intuition</h2>
+<h3 id="accessing-our-app">Accessing our app</h3>
+<p>When people access our web-app (app being viewed in your browser), Anvil Composable takes care of all the minutiae.
+Imagine if you tried to use your personal computer to host your app: each time people access the app, your computer will
+receive network traffic and have to provide, or <em>serve</em>, the appropriate content to the user. Further, your computer
+would have to be powered on and connected to the internet at all times, otherwise people couldn't access our app.</p>
+<p>Anvil Composable, among many other things, provides a stable server to ensure users of our app can always access our
+app. Kubernetes is the software layer Anvil Composable (AC) uses that automates deployment, scaling, and other aspects
+of our app. For example, if millions of people start using our app, we most likely want to replicate more instances of
+our app so we can serve more people concurrently (at the same time). This would require adding compute resources (CPUs,
+perhaps) so we can replicate many copies of our app for people to use.</p>
+<h3 id="architecture-of-an-example-app-services">Architecture of an example app (Services)</h3>
+<p>A common format for an app is to have 3 separate components: 1 for the frontend, 1 for the backend, and 1 for the
+database. This keeps logic separate and allows the developer to make incremental changes to each independent component
+separately. Let's dive into an example.</p>
+<p>Say you create a python script that takes in an argument for your <em>full name</em> and then prints out a greeting to you.
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>greet.py<span class="w"> </span>--full-name<span class="w"> </span>Annie<span class="w"> </span>Anvil
+&gt;&gt;&gt;<span class="w"> </span>Hello,<span class="w"> </span>Annie<span class="w"> </span>Anvil!<span class="w"> </span>It<span class="w"> </span>is<span class="w"> </span>nice<span class="w"> </span>to<span class="w"> </span>meet<span class="w"> </span>you
+</code></pre></div></p>
+<p>Great, you can run this on the command line and it works. But what if we want people to be able to interact with this
+script in the browser? We could create what we call a 'frontend', which defines what we see in our browser (in our
+example of a web-app). We will dive into the details later, but essentially the frontend is called a <em>service</em> because
+it needs to always monitor the url in our browser and <em>serve</em> the appropriate content.</p>
+<p>For example, if we navigate to <code>http://localhost:5173/home</code> we want to show our home page. Let's imagine we have a
+frontend and we run it via <code>npm run</code> (we will learn about this later); now we have a <em>frontend service</em> running.
+This is what listens on a specific url and port (e.g., http://localhost:5173) and will provide the content for each
+route (e.g., /home).</p>
+<p>Imagine our frontend has a home page with a button that says <strong>enter name</strong> and once you click <strong>Submit</strong>, the browser
+prints a nice text blob saying <code>Hello, &lt;name&gt;! It is nice to meet you</code>. Instead of writing the logic in our frontend
+(Javascript) app, we can use the logic from our <code>greet.py</code> to display this message. Our frontend will be in charge
+of collecting the <em>name</em> from our user, who writes in a box and clicks Submit. Then the frontend will <strong>talk to our
+backend</strong>, essentially inserting the <em>name</em> into the script:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>greet.py<span class="w"> </span>--full-name<span class="w"> </span>&lt;value-collected-from-frontend&gt;
+$<span class="w"> </span>python<span class="w"> </span>greet.py<span class="w"> </span>--full-name<span class="w"> </span>Annie<span class="w"> </span>Anvil<span class="w"> </span><span class="c1"># user wrote Annie Anvil in browser</span>
+</code></pre></div>
+<p>So we outlined how a user goes to a browser page (frontend), writes their name in a text box, the frontend communicates
+this information to the backend, and then the backend runs the program and provides the greeting. Next, we need the
+backend to respond, or communicate back to the frontend with the <em>output</em> from running greet.py, which is <code>Hello,
+Annie Anvil! It is nice to meet you</code>. Finally, the frontend receives this data and displays it for the user.</p>
+<p>Just like our frontend, we call our backend a <em>service</em> (even if it just consists of 1 python script) because it needs a
+mechanism to listen and respond to <em>requests</em> for doing work. Our example of doing work means listening for a
+--full-name to be provided and then running the greet.py script with the --full-name <value provided> parameters. Later
+on, we will talk about how to turn our backend from 1 (or many) static scripts into a proper service.</p>
+<p>Now let's add 1 more service to complete our 3-service app: a database service. Let's say we want to <strong>store</strong> the
+--full-name every time people come to our app, where do we put it? This is where the database comes into play. Our
+database service will simply be a database where we can store and retrieve data as requests come in (this is why we call
+it a service, as just like our frontend and backend, it must have a way to listen to requests).</p>
+<p>Our workflow thus will be:
+1. user goes to a browser page and our <em>frontend serves</em> them the home page
+2. they type in their name
+3. <em>frontend communicates name to the backend</em>
+4. backend <em>listens and receives</em> the request to run <code>greet.py</code> with the name data
+5. backend runs the code:
+   1. <em>communicates output to database</em>, <em>database receives request</em>, and stores the output
+   2. <em>communicates output to frontend</em>
+6. <em>frontend receives output</em> and serves the content to the web browser, showing the user their greeting!</p>
+<p>Imagine the frontend has another page, called <code>/old-greetings</code>. Here, the frontend could bypass the backend and
+simply communicate with the database, asking for all previous greetings that are stored. Once it receives a response
+from the database, it can render all the previous greetings on the page. Although, oftentimes the database service is
+only accessible to the backend for security reasons. In this case, the logic would flow as follows:</p>
+<ol>
+<li>User navigates to <code>/old-greetings</code> on the browser (frontend serves content)</li>
+<li>Frontend <strong>requests</strong> backend that it needs old greetings</li>
+<li>Backend <strong>requests</strong> database to query old greetings</li>
+<li>Database <strong>responds</strong> to the backend with all the old greetings</li>
+<li>Backend <strong>responds</strong> to frontend with all the data from old greetings</li>
+<li>Frontend <strong>serves</strong> the old greetings data to the web page for viewer to see</li>
+</ol>
+<h2 id="kubernetes-to-host-our-services">Kubernetes to Host our Services</h2>
+<p>In the previous sections, we introduced the different services that make up our application. Now, we need to talk about where those services actually run.</p>
+<p>This is where you’ll start hearing a lot of Kubernetes-related terms—containers, Docker, Pods, Services, Kubernetes, Ingress, and more. Don’t worry if these sound like buzzwords at first. We’ll introduce only what you need to understand to get up and running.</p>
+<p>Each part of our application—frontend, backend, and database—runs as its own container. This separation is intentional and powerful: it allows us to develop, update, and deploy each component independently without affecting the others.</p>
+<p>In Kubernetes, containers don’t run on their own. Instead, each container runs inside a Pod, which is the smallest deployable unit in Kubernetes. For our app, we’ll have:
+- A Pod for the frontend
+- A Pod for the backend
+- A Pod for the database</p>
+<p>If you want a deeper dive into how Kubernetes works under the hood, The Kubernetes Book by Nigel Poulton is an excellent (and free) resource. This tutorial focuses on the concepts you need to build and deploy an app, not on covering every Kubernetes feature.</p>
+<h3 id="how-pods-communicate-kubernetes-services">How Pods Communicate: Kubernetes Services</h3>
+<p>Now that each service lives in its own Pod, the next question is: how do they talk to each other?</p>
+<p>When the frontend needs data, it doesn’t communicate directly with the backend container—it communicates with the backend Pod. To make this communication reliable, Kubernetes provides an abstraction called a Service.</p>
+<p>To avoid confusion:
+- We’ll use “service” (lowercase) to refer to parts of our application (frontend, backend, database)
+- We’ll use “Service” (capital S) to refer to the Kubernetes object</p>
+<p>Think of it this way:
+- Each Pod is a house
+- A Kubernetes Service is a telephone
+- The Service gives Pods a stable “phone number” they can use to reach each other</p>
+<p>By defining Services, Kubernetes “wires up” our Pods so they can communicate without needing to know where the other Pods are physically running.</p>
+<h3 id="exposing-the-application-ingress">Exposing the Application: Ingress</h3>
+<p>Finally, we need a way for users outside the cluster to access our app.</p>
+<p>This is where Ingress comes in.</p>
+<p>An Ingress is a Kubernetes resource that defines:
+- Which URLs your application is available at
+- Which Services handle incoming requests</p>
+<p>For example, we might configure an Ingress so that requests to: <code>example.anvilcloud.rcac.purdue.edu</code> are routed to our <strong>frontend Service</strong>, which then serves the homepage.</p>
+<p>Using our analogy:
+- Pods are houses
+- Services are telephones
+- Ingress is the public phone nu,ber that lets the outside world find your app</p>
+<p>For security reasons, we typically expose only the frontend through the Ingress. The backend and database remain internal to the cluster, protected from direct access.</p>
+<p>At a high level, our Kubernetes setup looks like this:
+- Each app component runs in its own container
+- Each container lives inside a Pod
+- Pods communicate with each other through Kubernetes Services
+- The outside world accesses the app through an Ingress</p>
+<p>With these building blocks in place, we can now focus on deploying and managing our application inside Kubernetes.</p>
+<h2 id="local-kubernetes-development-deployment">Local Kubernetes Development &amp; Deployment</h2>
+<p>This tutorial demonstrates how to deploy a full-stack application on Anvil Composable using Kubernetes. We'll deploy:</p>
+<ul>
+<li><strong>Frontend</strong>: Svelte application (port 3000)</li>
+<li><strong>Backend</strong>: FastAPI Python application (port 80)</li>
+<li><strong>Database</strong>: MongoDB (port 27017)</li>
+<li><strong>Ingress</strong>: HTTP routing to frontend and backend</li>
+</ul>
+<p>By the end of this tutorial, you'll have a production-ready deployment running on Anvil Composable.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before you begin, ensure you have:</p>
+<ul>
+<li>Access to an Anvil Composable Kubernetes cluster</li>
+<li><code>kubectl</code> installed and configured</li>
+<li>Docker installed locally</li>
+<li>Access to a container registry (Docker Hub, etc.)</li>
+<li>Basic understanding of:</li>
+<li>Kubernetes concepts (Pods, Deployments, Services)</li>
+<li>Docker containerization</li>
+<li>REST APIs</li>
+</ul>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>Our application follows a three-tier architecture:</p>
+<div class="highlight"><pre><span></span><code>                    ┌─────────────┐
+                    │   Ingress   │
+                    └──────┬──────┘
+                           │
+           ┌───────────────┴───────────────┐
+           │                               │
+           ▼                               ▼
+    ┌─────────────┐                ┌─────────────┐
+    │  Frontend   │                │   Backend   │
+    │   Service   │                │   Service   │
+    │  (ClusterIP)│                │  (ClusterIP)│
+    └──────┬──────┘                └──────┬──────┘
+           │                               │
+           ▼                               ▼
+    ┌─────────────┐                ┌─────────────┐
+    │  Frontend   │                │   FastAPI   │
+    │    Pods     │◄───────────────┤    Pods     │
+    │ (2 replicas)│                │ (2 replicas)│
+    └─────────────┘                └──────┬──────┘
+                                          │
+                                          ▼
+                                   ┌─────────────┐
+                                   │   MongoDB   │
+                                   │   Service   │
+                                   │  (ClusterIP)│
+                                   └──────┬──────┘
+                                          │
+                                          ▼
+                                   ┌─────────────┐
+                                   │   MongoDB   │
+                                   │     Pod     │
+                                   │ (1 replica) │
+                                   └─────────────┘
+</code></pre></div>
+<p><strong>Key Components:</strong>
+- <strong>Ingress</strong>: Routes external traffic to frontend (/) and backend (/api)
+- <strong>Services</strong>: Provide stable networking for pod communication
+- <strong>Deployments</strong>: Manage pod lifecycle and scaling
+- <strong>Namespace</strong>: All resources deployed in <code>danetutorial</code> namespace</p>
+<h3 id="project-structure">Project Structure</h3>
+<div class="highlight"><pre><span></span><code>.
+├── README.md
+├── docs/
+│   └── tutorial.md              # This tutorial
+├── docker/
+│   ├── backend/
+│   │   └── Dockerfile           # FastAPI application Dockerfile
+│   └── docker-compose.yaml      # Local development setup
+└── k8s/
+    ├── backend/
+    │   ├── deployment.yaml      # FastAPI deployment (2 replicas)
+    │   └── service.yaml         # FastAPI service (ClusterIP)
+    ├── frontend/
+    │   ├── deployment.yaml      # Frontend deployment (2 replicas)
+    │   └── service.yaml         # Frontend service (ClusterIP)
+    ├── database/
+    │   ├── deployment.yaml      # MongoDB deployment (1 replica)
+    │   ├── deployment-simple.yaml  # Alternative MongoDB config
+    │   └── service.yaml         # MongoDB service (ClusterIP)
+    └── ingress.yaml             # HTTP routing configuration
+</code></pre></div>
+<h3 id="local-development-with-docker-compose">Local Development with Docker Compose</h3>
+<p>Before deploying to Kubernetes, test your application locally using Docker Compose.</p>
+<h4 id="review-the-docker-compose-configuration">Review the Docker Compose Configuration</h4>
+<p><strong>File: <code>docker/docker-compose.yaml</code></strong></p>
+<p>The compose file defines two services:
+- <code>mongodb</code>: MongoDB 7.0 with authentication
+- <code>fastapi</code>: Your backend API that connects to MongoDB</p>
+<h3 id="running-locally">Running Locally</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Navigate to docker directory</span>
+<span class="nb">cd</span><span class="w"> </span>docker
+
+<span class="c1"># Start all services</span>
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># View logs</span>
+docker-compose<span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="c1"># Test the backend</span>
+curl<span class="w"> </span>http://localhost:8000
+
+<span class="c1"># Stop services</span>
+docker-compose<span class="w"> </span>down
+</code></pre></div>
+<p><strong>Environment Variables:</strong>
+- <code>MONGO_INITDB_ROOT_USERNAME</code>: admin
+- <code>MONGO_INITDB_ROOT_PASSWORD</code>: password123 (change in production!)
+- <code>MONGO_URI</code>: Connection string for FastAPI</p>
+<h3 id="building-and-pushing-docker-images">Building and Pushing Docker Images</h3>
+<h4 id="backend-image">Backend Image</h4>
+<p>The backend Dockerfile (<code>docker/backend/Dockerfile</code>) creates a Python 3.11 container running FastAPI with Uvicorn.</p>
+<p><strong>Build and push:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Build the backend image</span>
+<span class="nb">cd</span><span class="w"> </span>docker/backend
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>YOUR_REGISTRY/YOUR_BACKEND_IMAGE:TAG<span class="w"> </span>.
+
+<span class="c1"># Push to registry</span>
+docker<span class="w"> </span>push<span class="w"> </span>YOUR_REGISTRY/YOUR_BACKEND_IMAGE:TAG
+</code></pre></div>
+<p><strong>Update the deployment:</strong>
+Edit <code>k8s/backend/deployment.yaml</code> line 18 to reference your image:
+<div class="highlight"><pre><span></span><code><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">YOUR_REGISTRY/YOUR_BACKEND_IMAGE:TAG</span>
+</code></pre></div></p>
+<h4 id="frontend-image">Frontend Image</h4>
+<p>The frontend uses a pre-built image: <code>wintermutant/margie-frontend:v0.0.1</code></p>
+<p>If you need to build your own frontend image:
+1. Create <code>docker/frontend/Dockerfile</code>
+2. Build and push similar to the backend
+3. Update <code>k8s/frontend/deployment.yaml</code> line 18</p>
+<h4 id="database-image">Database Image</h4>
+<p>TODO</p>
+<h3 id="understanding-the-kubernetes-manifests">Understanding the Kubernetes Manifests</h3>
+<h4 id="namespace">Namespace</h4>
+<p>All resources are deployed in the <code>danetutorial</code> namespace. Create it first:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>danetutorial
+</code></pre></div>
+<h4 id="database-layer">Database Layer</h4>
+<p><strong>File: <code>k8s/database/deployment.yaml</code></strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">danetutorial</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="c1"># ... containers, storage, etc.</span>
+</code></pre></div>
+<p><strong>Key features:</strong>
+- Single replica (stateful workload)
+- Resource limits: 500m CPU, 512Mi memory
+- Uses <code>emptyDir</code> volume (data lost on pod restart)
+- Environment variables for authentication</p>
+<p><strong>File: <code>k8s/database/service.yaml</code></strong></p>
+<p>Exposes MongoDB on port 27017 within the cluster:
+<div class="highlight"><pre><span></span><code><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterIP</span>
+<span class="nt">ports</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">27017</span>
+</code></pre></div></p>
+<p><strong>Note:</strong> For production, consider using a PersistentVolume instead of emptyDir.</p>
+<p><strong>Alternative:</strong> <code>k8s/database/deployment-simple.yaml</code> is a simpler version without namespace or resource limits.</p>
+<h4 id="backend-layer">Backend Layer</h4>
+<p><strong>File: <code>k8s/backend/deployment.yaml</code></strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fastapi</span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">danetutorial</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="c1"># ... containers, env, etc.</span>
+</code></pre></div>
+<p><strong>Key features:</strong>
+- 2 replicas for high availability
+- Resource limits: 250m CPU, 256Mi memory
+- Environment variable <code>MONGO_URI</code> connects to MongoDB service
+- Runs on port 80</p>
+<p><strong>File: <code>k8s/backend/service.yaml</code></strong></p>
+<p>Exposes the FastAPI backend:
+<div class="highlight"><pre><span></span><code><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterIP</span>
+<span class="nt">ports</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div></p>
+<h4 id="frontend-layer">Frontend Layer</h4>
+<p><strong>File: <code>k8s/frontend/deployment.yaml</code></strong></p>
+<p>Similar structure to backend:
+- 2 replicas
+- Resource limits: 250m CPU, 256Mi memory
+- Runs on port 3000</p>
+<p><strong>File: <code>k8s/frontend/service.yaml</code></strong></p>
+<p>Exposes the frontend on port 80 (maps to container port 3000):
+<div class="highlight"><pre><span></span><code><span class="nt">ports</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
+</code></pre></div></p>
+<h3 id="ingress">Ingress</h3>
+<p><strong>File: <code>k8s/ingress.yaml</code></strong></p>
+<p>Routes external HTTP traffic:
+- <code>/</code> → Frontend service
+- <code>/api</code> → Backend service</p>
+<div class="highlight"><pre><span></span><code><span class="nt">rules</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">http</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+<span class="w">          </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">          </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frontend</span>
+<span class="w">              </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/api</span>
+<span class="w">          </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span>
+<span class="w">          </span><span class="nt">backend</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">service</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fastapi</span>
+<span class="w">              </span><span class="nt">port</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
+</code></pre></div>
+<h2 id="deploying-to-anvil-composable">Deploying to Anvil Composable</h2>
+<h3 id="step-1-configure-kubectl">Step 1: Configure kubectl</h3>
+<p>Ensure your <code>kubectl</code> is configured to connect to your Anvil Composable cluster:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Verify connection</span>
+kubectl<span class="w"> </span>cluster-info
+
+<span class="c1"># Check current context</span>
+kubectl<span class="w"> </span>config<span class="w"> </span>current-context
+</code></pre></div>
+<h3 id="step-2-create-namespace">Step 2: Create Namespace</h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>danetutorial
+</code></pre></div>
+<h3 id="step-3-deploy-the-database">Step 3: Deploy the Database</h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/database/deployment.yaml
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/database/service.yaml
+
+<span class="c1"># Verify</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mongodb
+kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>mongodb
+</code></pre></div>
+<p>Wait for the MongoDB pod to be Running before proceeding.</p>
+<h3 id="step-4-deploy-the-backend">Step 4: Deploy the Backend</h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/backend/deployment.yaml
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/backend/service.yaml
+
+<span class="c1"># Verify</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>fastapi
+kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>fastapi
+</code></pre></div>
+<h3 id="step-5-deploy-the-frontend">Step 5: Deploy the Frontend</h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/frontend/deployment.yaml
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/frontend/service.yaml
+
+<span class="c1"># Verify</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>frontend
+kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>frontend
+</code></pre></div>
+<h3 id="step-6-deploy-the-ingress">Step 6: Deploy the Ingress</h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/ingress.yaml
+
+<span class="c1"># Verify</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>ingress<span class="w"> </span>-n<span class="w"> </span>danetutorial
+</code></pre></div>
+<h3 id="step-7-verify-all-resources">Step 7: Verify All Resources</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># View all pods</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># View all services</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># View deployments</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>deployments<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># View ingress</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>ingress<span class="w"> </span>-n<span class="w"> </span>danetutorial
+</code></pre></div>
+<p>Expected output:
+- 1 MongoDB pod (Running)
+- 2 FastAPI pods (Running)
+- 2 Frontend pods (Running)
+- 3 ClusterIP services
+- 1 Ingress with an external address</p>
+<h3 id="verification-and-testing">Verification and Testing</h3>
+<h4 id="check-pod-status">Check Pod Status</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># All pods should be Running</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># If any pod is not running, check logs</span>
+kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;pod-name&gt;
+
+<span class="c1"># Describe pod for more details</span>
+kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;pod-name&gt;
+</code></pre></div>
+<h4 id="test-the-backend">Test the Backend</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Port-forward to test backend directly</span>
+kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>svc/fastapi<span class="w"> </span><span class="m">8080</span>:80
+
+<span class="c1"># In another terminal</span>
+curl<span class="w"> </span>http://localhost:8080
+</code></pre></div>
+<h4 id="test-the-frontend">Test the Frontend</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Port-forward to test frontend</span>
+kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>svc/frontend<span class="w"> </span><span class="m">3000</span>:80
+
+<span class="c1"># Visit http://localhost:3000 in your browser</span>
+</code></pre></div>
+<h4 id="test-via-ingress">Test via Ingress</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get the ingress external IP/hostname</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>ingress<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># Access your application</span>
+<span class="c1"># http://&lt;EXTERNAL-IP&gt;/        (Frontend)</span>
+<span class="c1"># http://&lt;EXTERNAL-IP&gt;/api     (Backend)</span>
+</code></pre></div>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="pods-not-starting">Pods Not Starting</h3>
+<p><strong>Check pod status:</strong>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial
+kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;pod-name&gt;
+</code></pre></div></p>
+<p><strong>Common issues:</strong>
+- Image pull errors: Verify image name and registry access
+- Resource limits: Check cluster has available resources
+- Configuration errors: Review environment variables</p>
+<h3 id="database-connection-errors">Database Connection Errors</h3>
+<p><strong>Check MongoDB logs:</strong>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;mongodb-pod-name&gt;
+</code></pre></div></p>
+<p><strong>Verify service DNS:</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># From a backend pod</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;fastapi-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>nslookup<span class="w"> </span>mongodb
+</code></pre></div></p>
+<p><strong>Check MONGO_URI environment variable:</strong>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;fastapi-pod-name&gt;<span class="w"> </span>--<span class="w"> </span>env<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>MONGO
+</code></pre></div></p>
+<h3 id="ingress-not-working">Ingress Not Working</h3>
+<p><strong>Check ingress controller:</strong>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ingress
+</code></pre></div></p>
+<p><strong>Verify ingress configuration:</strong>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>ingress<span class="w"> </span>-n<span class="w"> </span>danetutorial
+</code></pre></div></p>
+<h3 id="view-events">View Events</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># See recent cluster events</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>--sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</code></pre></div>
+<h3 id="useful-debug-commands">Useful Debug Commands</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># View all resources in namespace</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># Execute command in a pod</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>--<span class="w"> </span>/bin/bash
+
+<span class="c1"># View pod logs with tail</span>
+kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>--tail<span class="o">=</span><span class="m">50</span><span class="w"> </span>-f
+
+<span class="c1"># Check resource usage</span>
+kubectl<span class="w"> </span>top<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>danetutorial
+</code></pre></div>
+<h2 id="cleanup">Cleanup</h2>
+<p>To remove all deployed resources:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Delete all resources</span>
+kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>k8s/ingress.yaml
+kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>k8s/frontend/
+kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>k8s/backend/
+kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>k8s/database/
+
+<span class="c1"># Delete namespace (removes everything)</span>
+kubectl<span class="w"> </span>delete<span class="w"> </span>namespace<span class="w"> </span>danetutorial
+
+<span class="c1"># Verify cleanup</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>-n<span class="w"> </span>danetutorial
+</code></pre></div>
+<h2 id="next-steps">Next Steps</h2>
+<h3 id="production-improvements">Production Improvements</h3>
+<ol>
+<li><strong>Persistent Storage for MongoDB</strong></li>
+<li>Replace <code>emptyDir</code> with a PersistentVolumeClaim</li>
+<li>
+<p>Ensures data survives pod restarts</p>
+</li>
+<li>
+<p><strong>Secrets Management</strong></p>
+</li>
+<li>Move passwords to Kubernetes Secrets</li>
+<li>
+<p>Use environment variables from secrets</p>
+</li>
+<li>
+<p><strong>Resource Optimization</strong></p>
+</li>
+<li>Monitor actual resource usage</li>
+<li>
+<p>Adjust CPU/memory requests and limits</p>
+</li>
+<li>
+<p><strong>High Availability</strong></p>
+</li>
+<li>Consider MongoDB replica set</li>
+<li>
+<p>Add pod anti-affinity rules</p>
+</li>
+<li>
+<p><strong>Monitoring and Logging</strong></p>
+</li>
+<li>Integrate with Prometheus/Grafana</li>
+<li>
+<p>Centralize logs with ELK or Loki</p>
+</li>
+<li>
+<p><strong>TLS/HTTPS</strong></p>
+</li>
+<li>Add cert-manager for automatic TLS</li>
+<li>
+<p>Configure ingress for HTTPS</p>
+</li>
+<li>
+<p><strong>Health Checks</strong></p>
+</li>
+<li>Add liveness and readiness probes</li>
+<li>Improve pod lifecycle management</li>
+</ol>
+<h3 id="scaling">Scaling</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Scale backend</span>
+kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>fastapi<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>--replicas<span class="o">=</span><span class="m">4</span>
+
+<span class="c1"># Scale frontend</span>
+kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>frontend<span class="w"> </span>-n<span class="w"> </span>danetutorial<span class="w"> </span>--replicas<span class="o">=</span><span class="m">3</span>
+</code></pre></div>
+<h3 id="updates">Updates</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update backend image</span>
+kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>image<span class="w"> </span>deployment/fastapi<span class="w"> </span><span class="nv">fastapi</span><span class="o">=</span>YOUR_REGISTRY/YOUR_IMAGE:NEW_TAG<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># Check rollout status</span>
+kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/fastapi<span class="w"> </span>-n<span class="w"> </span>danetutorial
+
+<span class="c1"># Rollback if needed</span>
+kubectl<span class="w"> </span>rollout<span class="w"> </span>undo<span class="w"> </span>deployment/fastapi<span class="w"> </span>-n<span class="w"> </span>danetutorial
+</code></pre></div>
+<hr />
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/">Kubernetes Documentation</a></li>
+<li><a href="https://fastapi.tiangolo.com/">FastAPI Documentation</a></li>
+<li><a href="https://www.mongodb.com/kubernetes">MongoDB on Kubernetes</a></li>
+<li><a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Kubectl Cheat Sheet</a></li>
+</ul>
+<hr />
+<p><strong>Questions or Issues?</strong>
+Check the troubleshooting section or review the Kubernetes events for your namespace.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Dane Deemer
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.sections", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
