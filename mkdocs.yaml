@@ -20,3 +20,10 @@ markdown_extensions:
 nav:
   - Home: index.md
   - VSCode: vscode.md
+  - Kubernetes: k8s-anvil.md
+  - Anvil Composable (CLI): anvil-composable-cli.md
+  - Anvil Composbale (Rancher): anvil-composable-rancher.md
+  - Anvil Notebook Kernel: jupyter-kernel-anvil-notebook.md
+
+# Copyright
+copyright: Copyright &copy; 2026 Dane Deemer
