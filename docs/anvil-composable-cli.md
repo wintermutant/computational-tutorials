@@ -4,6 +4,8 @@ A complete, user-friendly guide to making your application live and accessible t
 walk through an example application with 3 separate components (Svelte frontend, FastAPI backend, and MongoDB database)
 on Anvil Composable using Kubernetes.
 
+Please see [the associated repo](https://github.com/wintermutant/anvil-composable-tutorial) to follow along!
+
 - [Deploying a Full-Stack Application on Anvil Composable with Kubernetes](#deploying-a-full-stack-application-on-anvil-composable-with-kubernetes)
   - [Goal of this tutorial](#goal-of-this-tutorial)
   - [Intuition](#intuition)
